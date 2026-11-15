@@ -1,12 +1,14 @@
 // Google Maps
 
 function initMap() {
+  if (typeof google === 'undefined' || !google.maps) return;
   var elements = document.querySelectorAll('.js-map');
   Array.prototype.forEach.call(elements, function(el) {
     var lat = +el.dataset.latitude,
         lng = +el.dataset.longitude,
         zoom = +el.dataset.zoom;
-    if ((lat !== '') && (lng !== '') && (zoom > 0)) {
+    if (Number.isFinite(lat) && Number.isFinite(lng) && Number.isFinite(zoom) &&
+        lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180 && zoom > 0) {
       var map = new google.maps.Map(el, {
         zoom: zoom,
         center: { lat: lat, lng: lng },
@@ -54,16 +56,11 @@ function initMap() {
 // Increment
 
 function increment(incrementor, target) {
-  var value = parseInt(document.getElementById(target).value, 10);
+  var input = document.getElementById(target);
+  if (!input || !Number.isInteger(incrementor)) return;
+  var value = parseInt(input.value, 10);
   value = isNaN(value) ? 0 : value;
-  if(incrementor < 0) {
-    if(value > 1) {
-      value+=incrementor;
-    }
-  } else {
-    value+=incrementor;
-  }
-  document.getElementById(target).value = value;
+  input.value = Math.max(1, value + incrementor);
 }
 
 // Scroll to description
@@ -104,8 +101,8 @@ function increment(incrementor, target) {
     var link;
     var message = '<span class="uk-margin-small-right" uk-icon=\'check\'></span>Added to '  ;
     var links = {
-      favorites: '<a href="/favorites">favorites</a>',
-      compare: '<a href="/compare">compare</a>',
+      favorites: '<a href="favorites.html">favorites</a>',
+      compare: '<a href="compare.html">compare</a>',
     };
     if(el.classList.contains('js-add-to-favorites')) {
       link = links.favorites;
