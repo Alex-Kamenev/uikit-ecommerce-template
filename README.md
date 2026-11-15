@@ -1,8 +1,10 @@
 # UIkit E-commerce Template
 
-Responsive e-commerce template containing catalog, filters, product page, shopping cart and other elements of the online store. Built with [UIkit](https://getuikit.com).
+Responsive e-commerce template containing catalog, filters, product pages, cart and checkout screens. Built with [UIkit](https://getuikit.com).
 
-Demo: https://chekromul.github.io/uikit-ecommerce-template
+This is Aleksandar Kamenev's maintained fork of [Roman Chekurov's original template](https://github.com/chekromul/uikit-ecommerce-template). Original authorship, image credits and the MIT license are retained. The template is a static interface demo: it does not implement payments, authentication, inventory, order storage or a commerce backend.
+
+Original upstream demo: https://chekromul.github.io/uikit-ecommerce-template (not a deployment of this fork).
 
 Also you can see `Sass` port of this theme: [vkovic/uikit-computer-store-template](https://github.com/vkovic/uikit-computer-store-template) 
 
@@ -12,18 +14,17 @@ Also you can see `Sass` port of this theme: [vkovic/uikit-computer-store-templat
 
 ### Technologies
 
-The project leverages:
+The project uses:
 
 - [UIkit](https://getuikit.com)
 - [Pug](https://pugjs.org)
-- [Less](http://lesscss.org)
+- [Less](https://lesscss.org)
 - [Gulp](https://gulpjs.com)
 
 
-### Browser Support
-| <img src="https://user-images.githubusercontent.com/1215767/34348387-a2e64588-ea4d-11e7-8267-a43365103afe.png" alt="Chrome" width="16px" height="16px" /> Chrome | <img src="https://user-images.githubusercontent.com/1215767/34348590-250b3ca2-ea4f-11e7-9efb-da953359321f.png" alt="IE" width="16px" height="16px" /> IE | <img src="https://user-images.githubusercontent.com/1215767/34348380-93e77ae8-ea4d-11e7-8696-9a989ddbbbf5.png" alt="Edge" width="16px" height="16px" /> Edge | <img src="https://user-images.githubusercontent.com/1215767/34348394-a981f892-ea4d-11e7-9156-d128d58386b9.png" alt="Safari" width="16px" height="16px" /> Safari | <img src="https://user-images.githubusercontent.com/1215767/34348383-9e7ed492-ea4d-11e7-910c-03b39d52f496.png" alt="Firefox" width="16px" height="16px" /> Firefox |
-| :---------: | :---------: | :---------: | :---------: | :---------: |
-| Yes | 11+ | Yes | Yes | Yes |
+### Browser support
+
+Builds target modern browsers using the `browserslist` configuration in `package.json`. UIkit 3.25 and the current build tools replace the old release-candidate framework and legacy plugin chain. The fork retains its original Pug templates, theme Less sources and image assets; a visual browser comparison has not yet been performed.
 
 ## Quick start
 
@@ -51,21 +52,30 @@ uikit-ecommerce-store/
 
 ### Build
 
-To clone and run this project, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](https://npmjs.com)) installed on your computer. From your command line:
+Use Node.js 22 or newer (Node.js 24 was used for verification), Git and npm. From your terminal:
 
-```bash
-# Clone this repository
-$ git clone https://github.com/chekromul/uikit-ecommerce-template.git
-
-# Go into the repository
-$ cd uikit-ecommerce-template
-
-# Install dependencies
-$ npm install
-
-# Start
-$ gulp
+```sh
+git clone https://github.com/Alex-Kamenev/uikit-ecommerce-template.git
+cd uikit-ecommerce-template
+npm ci --ignore-scripts
+npm test
+npm start
 ```
+
+`npm test` builds the template and checks all 21 pages, local references, all 68 images, compiled scripts, the default Maps configuration and quantity/map input handling. `npm start` builds and runs a local BrowserSync server with source watchers. To serve an existing build, use `npm run server`; `npm run build` only writes the static output to `dest/`.
+
+Image files are copied unchanged, including on rebuild. The build clears only this checkout's `dest/` directory first, preventing stale output. The old image optimization/cache and GitHub Pages publishing plugins have been removed; no build or development command publishes files to GitHub. The generated output includes the original MIT `LICENSE`.
+
+### Optional Google Maps
+
+No Google Maps API key is shipped or requested by default. To enable map loading, supply your own browser API key when building, for example in PowerShell:
+
+```powershell
+$env:GOOGLE_MAPS_API_KEY = "your-browser-key"
+npm run build
+```
+
+The key becomes visible in generated HTML, as required for the browser Maps API. Restrict it to your site's HTTP referrers and the Maps JavaScript API in your Google Cloud project. A `.env` file is not loaded automatically. Keep the key out of source control; the inherited upstream key was removed from the current source, but historical commits retain it.
 
 ## Copyright and Credits
 
